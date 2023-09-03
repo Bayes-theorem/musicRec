@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="<%=basePath%>">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐推荐系统</title>
+
+
+    <!--CDN引入Bootstrap-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 新 Bootstrap5 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+    <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <style>
+        :root {
+            --green: #31c27c;
+            --gray: #aba9a9;
+            --lightblue: rgb(104, 163, 194);
+        }
+    </style>
+    {% block head %}{% endblock head %}
+</head>
+<body>
+    <div class="container-fluid" style="padding: 0;">
+        <!-- 头部导航栏 -->
+    <div id="header">
+        <div class="name">
+            <span>音乐推荐系统</span>
+        </div>
+        <div class="top_nav">
+            <ul>
+                <li>
+                    <a href="{% url 'index' %}">首页</a>
+                </li>
+                <li>
+                    <a href="{% url 'recommend:recommendation' %}">推荐</a>
+                </li>
+
+                {% comment %} 歌手才看查看数据分析页面 {% endcomment %}
+                {% if request.session.group == "singer" %}
+                <li>
+                    <a href="{% url 'user:analysis' %}">数据分析</a>
+                </li>
+                {% else %}
+                {% endif %}
+
+                {% if request.session.group == None %}
+                <li>
+                    <a href="{% url 'user:login' %}">登录</a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{% url 'user:logout' %}">退出登录</a>
+                </li>
+                {% endif %}
+
+            </ul>
+        </div>
+        {% comment %} <div class="user">
+            <img src="http://thirdqq.qlogo.cn/g?b=sdk&k=jyVBpozdpqW3elFGreDHMw&kti=Y_YHEwAAAAE&s=140&t=1677060465">
+        </div> {% endcomment %}
+    </div>
+
+    </div>
+
+
+    {%block content%}{% endblock%}
+
+
+    <div id="footer">个性化音乐推荐系统</div>
+</body>
+</html>

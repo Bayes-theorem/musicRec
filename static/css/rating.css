@@ -1,0 +1,27 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+li{
+    list-style: none;
+}
+.rating{
+    height: 26px;
+}
+.rating-item{
+    float: left;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    background:url("../image/评分1.png") no-repeat;
+    /* background:url(image/rating.svg) no-repeat; */
+    background-size:30px;
+}
+.rating-itemYellow{
+    float: left;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    background:url("../image/评分2.png") no-repeat;
+    background-size:30px;
+}

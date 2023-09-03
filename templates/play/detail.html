@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>歌曲详情页</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <link rel="stylesheet" href="{%static 'css/songdetail.css'%}">
+    <link rel="stylesheet" href="{%static 'css/rating.css'%}">
+
+</head>
+
+<body>
+
+    {% comment %} 音频播放 {% endcomment %}
+    
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 p-3">
+                <div class="song-cover">
+                    <img src="{%static '/songImg/' %}{{songInfo.song_img}}">
+                </div>
+            </div>
+            <div class="col-sm-8 p-3">
+                <div class="song-info">
+                    <h2>{{songInfo.song_name}}</h2>
+                    <div class="singer-box">
+                        <img src="{% static 'image/个人头像.png' %}">
+                        {%for singer in singers%}
+                        <span>{{singer.username}}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="text">流派：{{songInfo.label}}</div>
+                    <div class="text">语种：{{songInfo.song_languages}}</div>
+                    <div class="text">发行时间：{{songInfo.song_release}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4 p-3">
+                    <audio controls>
+                        <source src="{%static 'songFile/孤勇者.m4a'%}" type="audio/mpeg">
+                    </audio>
+                </div>
+                <div class="col-sm-4 p-3">
+                    {#评分#}
+                    <ul id="rating" class="rating">
+                        <li class="rating-item rating" title="很不好"></li>
+                        <li class="rating-item rating" title="不好"></li>
+                        <li class="rating-item rating" title="一般"></li>
+                        <li class="rating-item rating" title="好"></li>
+                        <li class="rating-item rating" title="很好"></li>
+                    </ul>
+                    <ul id="titleText"></ul> {#文本描述#}
+                </div>
+            </div>
+        </div>
+        {#评论#}
+        <div class="row">
+            <div class="panel panel-info">
+                <div class="panel-body">
+                    <form class="bs-example bs-example-form" role="form" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="input-group">
+                                    <input id="comment_text" type="text" class="form-control">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" onclick="comment()">
+                                           发布评论
+                                        </button>
+                                    </span>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div><!-- /.row -->
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {%for comment in comments%}
+            <div class="panel panel-info"> 
+                <div class="panel-body">
+                {{comment.comment_text}}{{comment.comment_date}}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <script>
+
+        function comment() {
+            $.ajax({
+                url: "{% url 'play:comment' %}",
+                type: "post",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    "comment_text": $("#comment_text").val(),
+                },
+                success: function (e) {
+                    alert("评论发布成功")
+                },
+    
+            })
+    
+        }
+    // 点亮方法
+    var rating = (function(){
+        var lightOn = function($item,num){
+            $item.each(function(index){
+                if(index<num){
+                    $(this).removeClass('rating-item').addClass('rating-itemYellow')
+                }else{
+                    $(this).addClass('rating-item').removeClass('rating-itemYellow')
+                }
+            });
+        }
+        var init= function(el,num){
+            var titleText = "";
+            var $rating = $(el),
+            $item = $rating.find('.rating');
+            // 初始化
+            lightOn($item,num);
+            // 鼠标移入事件，点击事件，鼠标移出事件
+            $rating.on('mouseover','.rating',function(){
+                lightOn($item,$(this).index()+1);
+                var titleText = $(this).attr('title')
+                $('#titleText').text(titleText)
+            }).on('click','.rating',function(){
+                num = $(this).index()+1;
+                titleText = $(this).attr('title')
+                $('#titleText').text(titleText) //点击星号后显示对应的文本 
+
+                //修改评分
+                $.ajax({
+                    url: "{% url 'play:rating' %}",
+                    type: "post",
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        "rating_number": num,
+                    },
+                    success: function (e) {
+                        console.log(e)
+                        alert("评分修改成功")
+                    },
+                })
+
+            }).on('mouseout',function(){
+                lightOn($item,num);
+                $('#titleText').text(titleText)
+            });
+
+        };
+        $.fn.extend({
+            rating:function(num){
+                return this.each(function(){
+                    init(this,num);
+                });
+            }
+        });
+        // 返回一个对象
+        return {
+            init:init
+        };
+    })();
+
+    // 获取当前用户对歌曲的评分,调用点亮方法
+    $(document).ready(function(){
+        $.ajax({
+            url: "{% url 'play:rating' %}",
+            type: "get",
+            success: function (e) {
+                console.log('rating_number',e.rating_number)
+                // 初始化星号
+                rating.init('#rating',e.rating_number);
+            },
+        })
+    });
+
+    
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+.rec-icon {
+    height: 160px;
+    margin: 10px 5px;
+    padding: 10px;
+    /* border: 1px solid #31c27c; */
+    border-radius: 5%;
+    text-align: center;
+    vertical-align: middle;
+    
+    background-color: rgba(146, 246, 172, 0.6);
+}
+
+.rec-icon img {
+    width: 100px;
+    height: 100px;
+}
+
+.rec-item {
+    background-color: rgb(193, 220, 220);
+    margin: 10px 0;
+    padding: 5px;
+    /* border: 1px solid #31c27c; */
+    height: 160px;
+}
+
+.rec-item img {
+    float: left;
+    width: 50%;
+    height: 100%;
+}
+
+.item-box {
+    /* border: 1px solid #31c27c; */
+    float: right;
+    width: 49%;
+    height: 100%;
+    text-align: left;
+    padding: 15px 0;
+
+}
+
+.item-box .name {
+    font-size: larger;
+    text-align: left;
+}
+
+.item-box .singer {
+    font-size: medium;
+}
+
+.item-box .date {
+    font-size: smaller;
+    color: #4a4848
+}
+
+
+.songlink,.songlink:hover{
+    text-decoration: none;
+}

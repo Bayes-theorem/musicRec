@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+{% endblock head %}
+
+{% block content %}
+
+    <!-- 内容 -->
+
+    <!-- 搜索 -->
+    <div class="container">
+        <div class="search-box">
+            <input class="search-txt" type='text' id='search_input' placeholder="搜索" />
+            <!-- <input class="search-btn" type='button' id='search_btn'/> -->
+            <img class="search-btn" src="{%static 'image/search.jpg'%}" id='search_btn'>
+        </div>
+    </div>
+    <!-- 轮播图＋月度榜单列表 -->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 p-3">
+                <div id="demo" class="carousel slide" data-bs-ride="carousel">
+
+                    <!-- 指示符 -->
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                    </div>
+
+                    <!-- 轮播图片 -->
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="https://y.qq.com/music/common/upload/MUSIC_FOCUS/4573989.jpg?max_age=2592000"
+                                class="d-block" style="width:100%">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://y.qq.com/music/common/upload/MUSIC_FOCUS/4573620.png?max_age=2592000"
+                                class="d-block" style="width:100%">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://y.qq.com/music/common/upload/MUSIC_FOCUS/4574093.jpg?max_age=2592000"
+                                class="d-block" style="width:100%">
+                        </div>
+                    </div>
+
+                    <!-- 左右切换按钮 -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm-4 p-3">
+                <div style="font-size: 20px;text-align: center;background-color:beige;color: darkgreen;">榜单</div>
+                <ul class="list-group">
+                    {% for song in monthlyTopSongList %}
+                    <li style='list-style: none;font-size: 16px; text-align: left;margin: 2px 15px;'>
+                        <a class="songlink" href="{%url 'play:detail'%}?id={{song.song_id}}">{{song.song_name}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 今日热门 -->
+    <div class="container">
+        <div class="row" >
+            <div class="col-sm-3 p-3">
+                <div class="rec-icon">
+                    <img src="{%static 'image/recommend.png'%}">
+                    <div style="font-size: 30px;color:#fff;">今日热点</div>
+                </div>
+            </div>
+            {% for song in dailyTopSongList %}
+            <div class="col-sm-3 p-3">
+                <a class="songlink" href="{%url 'play:detail'%}?id={{song.song_id}}">
+                    <div class="rec-item">
+                        <img src="{%static '/songImg/' %}{{song.song_img}}" alt="封面" style="float: left;">
+                        <div class="item-box">
+                            <div class="name">{{song.song_name}}</div>
+                            <div class="singer">{{song.song_singer}}</div>
+                            <div class="date">发行时间：{{song.song_release}}</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <hr />
+    </div>
+
+
+{% endblock content %}

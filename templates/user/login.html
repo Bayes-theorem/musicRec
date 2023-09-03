@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录页</title>
+
+    <link rel="stylesheet" type="text/css" href="{%static 'css/login.css'%}">
+
+</head>
+
+<body>
+    <div class="container right-panel-active">
+        <!-- Sign Up -->
+        <div class="container__form container--signup">
+            <form action="/user/login/" class="form" id="form1">
+                <h2 class="form__title">注册</h2>
+                <input type="text" placeholder="用户名" class="input" />
+                <input type="email" placeholder="邮箱" class="input" />
+                <input type="password" placeholder="密码" class="input" />
+                <button class="btn">注册</button>
+            </form>
+        </div>
+
+        <!-- Sign In -->
+        <div class="container__form container--signin">
+            {% comment %} <form action="#" class="form" id="form2">
+                <h2 class="form__title">登录</h2>
+                <input type="email" placeholder="邮箱" class="input" />
+                <input type="password" placeholder="密码" class="input" />
+                <a href="" class="link">忘记密码？</a>
+                <button class="btn" onclick="window.location.href='homepage.html'">登录</button>
+            </form> {% endcomment %}
+            <form method="post" class="form">
+                {% csrf_token %}
+                <div class="modal-body" id="model-body">
+                    <div class="input">
+                        {{form.name}}
+                    </div>
+                    <span style="color:red">{{form.name.errors.0}}</span>
+                    <div class="input">
+                        {{form.password}}
+                    </div>
+                    <span style="color:red">{{form.password.errors.0}}</span>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary form-control" value="登录">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Overlay -->
+        <div class="container__overlay">
+            <div class="overlay" style="background: url({% static 'image/bg_login_box_1.jpg' %})">
+                <div class="overlay__panel overlay--left">
+                    <button class="btn" id="signIn">登录</button>
+                </div>
+                <div class="overlay__panel overlay--right">
+                    <button class="btn" id="signUp">注册</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const signInBtn = document.getElementById("signIn");
+        const signUpBtn = document.getElementById("signUp");
+        const container = document.querySelector(".container");
+
+        signInBtn.addEventListener("click", () => {
+            container.classList.remove("right-panel-active");
+        });
+
+        signUpBtn.addEventListener("click", () => {
+            container.classList.add("right-panel-active");
+        });
+
+        fistForm.addEventListener("submit", (e) => e.preventDefault());
+        secondForm.addEventListener("submit", (e) => e.preventDefault());
+
+    </script>
+</body>
+
+</html>

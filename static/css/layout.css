@@ -1,0 +1,92 @@
+/* :root{
+    --green:#31c27c
+    --gray:#aba9a9
+} */
+
+#header {
+    background-color:rgb(104, 163, 194);
+    padding:5px;
+    margin: auto;
+    display: flex;
+    height: 80px;
+}
+
+.name {
+    float: left;
+    width: 200px;
+    height: 45px;
+    margin: auto;
+    font-size: 30px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.name span {
+    font-size: 30px;
+    font-weight: 500;
+    color: antiquewhite;
+    /* background-color: var(--green); */
+    padding: 10px 5px;
+    ;
+}
+
+.top_nav {
+    float: left;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.top_nav ul li {
+    float: left;
+    margin: auto 15px;
+    height: 100%;
+    list-style: none;
+    justify-content: center;
+    /* border: 1px solid #000; */
+}
+
+.top_nav ul li a {
+    display: block;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 10px;
+    color: black;
+    margin: auto;
+    text-decoration: none;
+
+}
+
+.top_nav_active {
+    background-color: var(--green);
+}
+
+.top_nav ul li a:hover,a:active {
+    background-color: var(--green);
+}
+
+
+.user {
+    position: relative;
+    font-size: 16px;
+    float: right;
+    width: 38px;
+    margin-right: 10px;
+    margin-left: 15px;
+    text-align: center;
+    height: 90px;
+}
+
+.user img {
+    width: 38px;
+    height: 38px;
+    border-radius: 90px;
+    margin-top: 14px;
+}
+
+#footer {
+    background-color:rgb(104, 163, 194);
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:5px 0; 
+}

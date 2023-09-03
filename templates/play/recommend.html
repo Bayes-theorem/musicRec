@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/recommend.css' %}">
+{% endblock head %}
+
+{% block content %}
+<div class="container">
+    <h3>基于用户相似度的协同过滤推荐</h3>
+</div>
+
+{#基于用户相似度的推荐音乐列表#}
+<div class="container">
+    <div class="row">
+        {% for song in userCF_page.object_list %}
+        <div class="col-sm-2 p-3">
+            <a class="songlink" href="{%url 'play:detail'%}?id={{song.song_id}}">
+                <div class="song-item">
+                    <img src="{%static '/songImg/' %}{{song.song_img}}">
+                    <div class="text">{{song.song_name}} </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{#分页效果#}
+<div class="text-center">
+<ul class="pagination">
+    {# 如果当前页还有上一页 #}
+    {% if userCF_page.has_previous %}
+    <li>
+        <a href="{%url 'recommend:recommendation'%}?userCF_number={{userCF_page.previous_page_number}}">上一页</a>
+    </li>
+    {% else %}
+    {# 如果没有上一页， 则上一页按钮不可点击 #}
+    <li class="disabled">
+        <a href="#">上一页</a>
+    </li>
+    {% endif %}
+
+    {% for page_number in userCF_paginator.page_range %}
+        {# 获取当前页的页码 #}
+        {% if page_number == userCF_page.number %}
+        {# 如果是当前页的话，选中 #}
+        <li class="active">
+            <a href="{%url 'recommend:recommendation'%}?userCF_number={{page_number}}">{{page_number}}</a>
+        </li>
+        {% else %}
+        <li>
+            <a href="{%url 'recommend:recommendation'%}?userCF_number={{page_number}}">{{page_number}}</a>
+        </li>
+        {% endif %}
+    {% endfor %}
+
+    {% if userCF_page.has_next %}
+    <li>
+        <a href="{%url 'recommend:recommendation'%}?userCF_number={{userCF_page.next_page_number}}">下一页</a>
+    </li>
+    {% else %}
+    <li class="disabled">
+        <a href="#">下一页</a>
+    </li>
+    {% endif %}
+</ul>
+</div>
+
+
+<div class="container">
+    <h3>基于矩阵分解的协同过滤推荐</h3>
+</div>
+
+{#基于用户相似度的推荐音乐列表#}
+<div class="container">
+    <div class="row">
+        {% for song in FM_BiasSVD_page.object_list %}
+        <div class="col-sm-2 p-3">
+            <a class="songlink" href="{%url 'play:detail'%}?id={{song.song_id}}">
+                <div class="song-item">
+                    <img src="{%static '/songImg/' %}{{song.song_img}}">
+                    <div class="text">{{song.song_name}} </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{#分页效果#}
+<div class="text-center">
+<ul class="pagination">
+    {# 如果当前页还有上一页 #}
+    {% if FM_BiasSVD_page.has_previous %}
+    <li>
+        <a href="{%url 'recommend:recommendation'%}?FM_BiasSVD_number={{FM_BiasSVD_page.previous_page_number}}">上一页</a>
+    </li>
+    {% else %}
+    {# 如果没有上一页， 则上一页按钮不可点击 #}
+    <li class="disabled">
+        <a href="#">上一页</a>
+    </li>
+    {% endif %}
+
+    {% for page_number in FM_BiasSVD_paginator.page_range %}
+        {# 获取当前页的页码 #}
+        {% if page_number == FM_BiasSVD_page.number %}
+        {# 如果是当前页的话，选中 #}
+        <li class="active">
+            <a href="{%url 'recommend:recommendation'%}?FM_BiasSVD_number={{page_number}}">{{page_number}}</a>
+        </li>
+        {% else %}
+        <li>
+            <a href="{%url 'recommend:recommendation'%}?FM_BiasSVD_number={{page_number}}">{{page_number}}</a>
+        </li>
+        {% endif %}
+    {% endfor %}
+
+    {% if FM_BiasSVD_page.has_next %}
+    <li>
+        <a href="{%url 'recommend:recommendation'%}?FM_BiasSVD_number={{FM_BiasSVD_page.next_page_number}}">下一页</a>
+    </li>
+    {% else %}
+    <li class="disabled">
+        <a href="#">下一页</a>
+    </li>
+    {% endif %}
+</ul>
+</div>
+{% endblock %}
